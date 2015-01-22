@@ -1,5 +1,5 @@
 ---
 apache_logs: '/var/log/httpd'
-apache_vhost_dir: '/etc/httpd/vhost.d'
+apache_vhost_dir: '/etc/httpd/conf.d'
 apache_group: 'apache'
 apache_process: 'httpd'

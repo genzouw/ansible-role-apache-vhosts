@@ -16,12 +16,11 @@
     Options Includes FollowSymLinks
     AllowOverride All
 
-    # RewriteEngine on
-    # RewriteBase /
-    # 
     # # 強制的にHTTPSとする
-    # RewriteCond %{SERVER_PORT} ^80$
-    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    # RewriteEngine on
+    # RewriteCond %{SERVER_PORT} !^443$ [OR]
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://${HTTP_HOST}/$1 [R=302,L]
 
     <IfModule mod_authz_core.c>
       # Apache 2.4
@@ -65,10 +64,22 @@
 
   SSLEngine on
   SSLProtocol all
-  SSLCertificateFile      /etc/pki/tls/certs/startssl.crt
-  SSLCertificateKeyFile   /etc/pki/tls/certs/startssl.key
-  SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
-  SSLCACertificateFile    /etc/pki/tls/certs/ca.pem
+{% if ssl_certificate_file is defined %}
+  SSLCertificateFile      {{ ssl_certificate_file }}
+{% endif %}
+{% if ssl_certificate_key_file is defined %}
+  SSLCertificateKeyFile   {{ ssl_certificate_key_file }}
+{% endif %}
+{% if ssl_certificate_chain_file is defined %}
+  SSLCertificateChainFile {{ ssl_certificate_chain_file }}
+{% endif %}
+{% if ssl_cacertificate_file is defined %}
+  SSLCACertificateFile    {{ ssl_cacertificate_file }}
+{% endif %}
+        
+        
+        
+        
 
   DirectoryIndex index.html index.php
 

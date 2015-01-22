@@ -1,0 +1,39 @@
+---
+- name: Setup vhost.d directory
+  file: path={{ apache_vhost_dir }} state=directory
+  when: ansible_os_family == 'RedHat'
+
+- name: Setup parent directory and sftp jail permissions
+  file: path={{ vhost_parent_root }} state=directory mode=0755 owner=root group=root
+
+- name: Create sftponly group
+  group: name=sftponly state=present
+
+- name: Create user
+  user: name={{ item.sftp_user }} groups=sftponly home={{ item.vhost_home }} password={{ item.sftp_pass }} shell=/sbin/nologin state=present
+  with_items: vhosts
+  tags: user
+
+- name: Create jail directory
+  file: path={{ item.vhost_home }} state=directory owner=root group=root mode=0755
+  with_items: vhosts
+  tags: jail_dir
+
+- name: Create document root and set permissions
+  file: path={{ item.vhost_home }}/public_html state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=4755
+  with_items: vhosts
+  tags: doc_root
+
+- name: Create apache vhost
+  template: src=vhost.conf.j2 dest={{ apache_vhost_dir }}/{{ item.server_name }}.conf owner=root mode=0644
+  with_items: vhosts
+  tags: vhost
+
+- name: Enable vhosts
+  command: /usr/sbin/a2ensite {{ item.server_name }}.conf
+  with_items: vhosts
+  when: ansible_os_family == 'Debian'
+  tags: enable_vhost
+
+- name: Restart apache
+  service: name={{ apache_process }} state=restarted

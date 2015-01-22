@@ -1,0 +1,107 @@
+<VirtualHost *:80>
+  ServerName {{ item.server_name }}
+{% if item.server_alias is defined and item.server_alias != '' %}
+  ServerAlias {{ item.server_alias }}
+{% endif %}
+  ServerAdmin webmaster@{{ item.server_name }}
+
+  CustomLog {{ apache_logs }}/{{ item.server_name }}-access.log combined
+  ErrorLog {{ apache_logs }}/{{ item.server_name }}-error.log
+  LogLevel warn
+
+  DirectoryIndex index.html index.php
+
+  DocumentRoot {{ item.vhost_home }}/public_html
+  <Directory {{ item.vhost_home }}/public_html>
+    Options Includes FollowSymLinks
+    AllowOverride All
+
+    # RewriteEngine on
+    # RewriteBase /
+    # 
+    # # 強制的にHTTPSとする
+    # RewriteCond %{SERVER_PORT} ^80$
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+    <IfModule mod_authz_core.c>
+      # Apache 2.4
+      ### Local
+      Order deny,allow
+      <RequireAny>
+        Require all granted
+        Require ip ::1
+      </RequireAny>
+      ### Dev
+      # AuthType Digest
+      # AuthName "{{ item.server_name }} authentication"
+      # AuthUserFile /etc/httpd/{{ item.server_name }}.htdigest
+      # require valid-user
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      # Apache 2.2
+      Order Deny,Allow
+      #Deny from All
+      Allow from all
+      Allow from ::1
+      # AuthType Digest
+      # AuthName "{{ item.server_name }} authentication"
+      # AuthUserFile /etc/httpd/{{ item.server_name }}.htdigest
+      # require valid-user
+    </IfModule>
+  </Directory>
+</VirtualHost>
+
+{% if item.use_ssl %}
+<VirtualHost *:443>
+  ServerName {{ item.server_name }}
+{% if item.server_alias is defined and item.server_alias != '' %}
+  ServerAlias {{ item.server_alias }}
+{% endif %}
+  ServerAdmin webmaster@{{ item.server_name }}
+
+  CustomLog {{ apache_logs }}/{{ item.server_name }}-access.log combined
+  ErrorLog {{ apache_logs }}/{{ item.server_name }}-error.log
+  LogLevel warn
+
+  SSLEngine on
+  SSLProtocol all
+  SSLCertificateFile      /etc/pki/tls/certs/startssl.crt
+  SSLCertificateKeyFile   /etc/pki/tls/certs/startssl.key
+  SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
+  SSLCACertificateFile    /etc/pki/tls/certs/ca.pem
+
+  DirectoryIndex index.html index.php
+
+  DocumentRoot {{ item.vhost_home }}/public_html
+  <Directory {{ item.vhost_home }}/public_html>
+    Options Includes FollowSymLinks
+    AllowOverride All
+
+    <IfModule mod_authz_core.c>
+      # Apache 2.4
+      ### Local
+      Order deny,allow
+      <RequireAny>
+        Require all granted
+        Require ip ::1
+      </RequireAny>
+      ### Dev
+      # AuthType Digest
+      # AuthName "{{ item.server_name }} authentication"
+      # AuthUserFile /etc/httpd/{{ item.server_name }}.htdigest
+      # require valid-user
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      # Apache 2.2
+      Order Deny,Allow
+      #Deny from All
+      Allow from all
+      Allow from ::1
+      # AuthType Digest
+      # AuthName "{{ item.server_name }} authentication"
+      # AuthUserFile /etc/httpd/{{ item.server_name }}.htdigest
+      # require valid-user
+    </IfModule>
+  </Directory>
+</VirtualHost>
+{% endif %}

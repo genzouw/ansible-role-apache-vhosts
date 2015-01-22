@@ -1,0 +1,5 @@
+---
+apache_logs: '/var/log/apache2'
+apache_vhost_dir: '/etc/apache2/sites-available'
+apache_group: 'www-data'
+apache_process: 'apache2'

@@ -9,6 +9,16 @@
     - mod_ssl
   when: ansible_os_family == 'RedHat'
 
+- lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regexp: '^ *NameVirtualHost  *\*:80'
+      line: 'NameVirtualHost *:80'
+    - regexp: '^ *NameVirtualHost  *\*:443'
+      line: 'NameVirtualHost *:443'
+
 - name: Setup vhost.d directory
   file: path={{ apache_vhost_dir }} state=directory
   when: ansible_os_family == 'RedHat'

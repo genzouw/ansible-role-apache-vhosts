@@ -88,9 +88,9 @@
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_cacertificate_file is defined
 
-- name: strip ssl keys
-  command: openssl rsa -in {{item.key_dest}} -out {{item.key_stripped}} -passin pass:{{item.key_password}} creates={{item.key_stripped}}
-  with_items: ssl_certificates
+# - name: strip ssl keys
+  # command: openssl rsa -in {{item.key_dest}} -out {{item.key_stripped}} -passin pass:{{item.key_password}} creates={{item.key_stripped}}
+  # with_items: ssl_certificates
 
 - name: Restart apache
   service: name={{ apache_process }} state=restarted

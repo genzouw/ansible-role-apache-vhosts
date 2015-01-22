@@ -20,7 +20,7 @@
     # RewriteEngine on
     # RewriteCond %{SERVER_PORT} !^443$ [OR]
     # RewriteCond %{HTTPS} off
-    # RewriteRule ^(.*)$ https://${HTTP_HOST}/$1 [R=302,L]
+    # RewriteRule (.*) https://%{HTTP_HOST}/%{REQUEST_URI} [R=302,L]
 
     <IfModule mod_authz_core.c>
       # Apache 2.4

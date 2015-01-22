@@ -64,22 +64,18 @@
 
   SSLEngine on
   SSLProtocol all
-{% if ssl_certificate_file is defined %}
-  SSLCertificateFile      {{ ssl_certificate_file }}
+{% if item.ssl_certificate_file is defined %}
+  SSLCertificateFile      /etc/pki/tls/certs/{{ item.ssl_certificate_file }}
 {% endif %}
-{% if ssl_certificate_key_file is defined %}
-  SSLCertificateKeyFile   {{ ssl_certificate_key_file }}
+{% if item.ssl_certificate_key_file is defined %}
+  SSLCertificateKeyFile   /etc/pki/tls/certs/{{ item.ssl_certificate_key_file }}
 {% endif %}
-{% if ssl_certificate_chain_file is defined %}
-  SSLCertificateChainFile {{ ssl_certificate_chain_file }}
+{% if item.ssl_certificate_chain_file is defined %}
+  SSLCertificateChainFile /etc/pki/tls/certs/{{ item.ssl_certificate_chain_file }}
 {% endif %}
-{% if ssl_cacertificate_file is defined %}
-  SSLCACertificateFile    {{ ssl_cacertificate_file }}
+{% if item.ssl_cacertificate_file is defined %}
+  SSLCACertificateFile    /etc/pki/tls/certs/{{ item.ssl_cacertificate_file }}
 {% endif %}
-        
-        
-        
-        
 
   DirectoryIndex index.html index.php
 

@@ -24,7 +24,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Setup parent directory and sftp jail permissions
-  file: path={{ vhost_parent_root }} state=directory mode=4775 owner=root group={{ apache_group }}
+  file: path={{ vhost_parent_root }} state=directory mode=2775 owner=root group={{ apache_group }}
 
 - name: Create sftponly group
   group: name=sftponly state=present
@@ -40,7 +40,7 @@
   tags: jail_dir
 
 - name: Create document root and set permissions
-  file: path={{ item.vhost_home }}/public_html state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=4775
+  file: path={{ item.vhost_home }}/public_html state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=2775
   with_items: vhosts
   tags: doc_root
 

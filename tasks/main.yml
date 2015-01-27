@@ -93,4 +93,4 @@
   # with_items: ssl_certificates
 
 - name: Restart apache
-  service: name={{ apache_process }} state=restarted
+  service: name={{ apache_process }} enabled=yes state=restarted

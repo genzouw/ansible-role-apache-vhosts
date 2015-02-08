@@ -40,7 +40,7 @@
   tags: jail_dir
 
 - name: Create document root and set permissions
-  file: path={{ item.vhost_home }}/public_html state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=2775
+  file: path={{ item.vhost_home }} state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=4775
   with_items: vhosts
   tags: doc_root
 
@@ -93,4 +93,4 @@
   # with_items: ssl_certificates
 
 - name: Restart apache
-  service: name={{ apache_process }} enabled=yes state=restarted
+  service: name={{ apache_process }} state=restarted

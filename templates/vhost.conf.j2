@@ -11,8 +11,8 @@
 
   DirectoryIndex index.html index.php
 
-  DocumentRoot {{ item.vhost_home }}/public_html
-  <Directory {{ item.vhost_home }}/public_html>
+  DocumentRoot {{ item.vhost_home }}
+  <Directory {{ item.vhost_home }}>
     Options Includes FollowSymLinks
     AllowOverride All
 
@@ -79,8 +79,8 @@
 
   DirectoryIndex index.html index.php
 
-  DocumentRoot {{ item.vhost_home }}/public_html
-  <Directory {{ item.vhost_home }}/public_html>
+  DocumentRoot {{ item.vhost_home }}
+  <Directory {{ item.vhost_home }}>
     Options Includes FollowSymLinks
     AllowOverride All
 

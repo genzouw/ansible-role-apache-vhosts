@@ -23,24 +23,8 @@
   file: path={{ apache_vhost_dir }} state=directory
   when: ansible_os_family == 'RedHat'
 
-- name: Setup parent directory and sftp jail permissions
-  file: path={{ vhost_parent_root }} state=directory mode=0755 owner=root group=root
-
-- name: Create sftponly group
-  group: name=sftponly state=present
-
-- name: Create sftp only user
-  user: name={{ item.sftp_user }} groups=sftponly home={{ item.vhost_home }} password={{ item.sftp_pass }} shell=/sbin/nologin state=present
-  with_items: vhosts
-  tags: user
-
-- name: Create jail directory
-  file: path={{ item.vhost_home }} state=directory owner=root group=root mode=0755
-  with_items: vhosts
-  tags: jail_dir
-
 - name: Create document root and set permissions
-  file: path={{ item.vhost_home }} state=directory owner={{ item.sftp_user }} group={{ apache_group }} mode=4775
+  file: path={{ item.vhost_home }} state=directory owner={{ apache_group }} group={{ apache_group }} mode=u+rwx,g+rws
   with_items: vhosts
   tags: doc_root
 
@@ -60,7 +44,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: 0755
+    mode: u+rwx,g+r
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_file is defined
 - copy:
@@ -68,7 +52,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: 0755
+    mode: u+rwx,g+r
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_key_file  is defined
 - copy:
@@ -76,7 +60,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: 0755
+    mode: u+rwx,g+r
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_chain_file  is defined
 - copy:
@@ -84,7 +68,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: 0755
+    mode: u+rwx,g+r
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_cacertificate_file is defined
 

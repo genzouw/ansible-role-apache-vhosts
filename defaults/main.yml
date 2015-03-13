@@ -1,4 +1,5 @@
 ---
+proxy_pass_reverse_port: ''
 vhost_parent_root: '/var/www/vhosts'
 vhosts:
     - { server_name: 'site1.com', servere_alias: '', vhost_home: '{{ vhost_parent_root }}/site1.com', sftp_user: 'site1', sftp_pass: 'sha_512_password', use_ssl: yes }

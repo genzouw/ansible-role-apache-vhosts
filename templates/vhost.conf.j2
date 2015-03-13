@@ -9,6 +9,11 @@
   ErrorLog {{ apache_logs }}/{{ item.server_name }}-error.log
   LogLevel warn
 
+{% if item.proxy_pass_reverse_port is defined and item.proxy_pass_reverse_port != '' %}
+  ProxyPreserveHost On
+  ProxyPass / http://127.0.0.1:{{ item.proxy_pass_reverse_port }}/
+  ProxyPassReverse / http://127.0.0.1:{{ item.proxy_pass_reverse_port }}/
+{% else %}
   DirectoryIndex index.html index.php
 
   DocumentRoot {{ item.vhost_home }}
@@ -48,6 +53,7 @@
       # require valid-user
     </IfModule>
   </Directory>
+{% endif %}
 </VirtualHost>
 
 {% if item.use_ssl %}

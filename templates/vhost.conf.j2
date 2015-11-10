@@ -1,4 +1,6 @@
 <VirtualHost *:80>
+  BufferedLogs on
+
   ServerName {{ item.server_name }}
 {% if item.server_alias is defined and item.server_alias != '' %}
   ServerAlias {{ item.server_alias }}
@@ -58,6 +60,8 @@
 
 {% if item.use_ssl %}
 <VirtualHost *:443>
+  BufferedLogs on
+
   ServerName {{ item.server_name }}
 {% if item.server_alias is defined and item.server_alias != '' %}
   ServerAlias {{ item.server_alias }}

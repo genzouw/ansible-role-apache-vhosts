@@ -23,8 +23,13 @@
   file: path={{ apache_vhost_dir }} state=directory
   when: ansible_os_family == 'RedHat'
 
+- name: Create jail directory
+  file: path={{ item.vhost_home }} state=directory owner=root group=root mode=0755
+  with_items: vhosts
+  tags: jail_dir
+
 - name: Create document root and set permissions
-  file: path={{ item.vhost_home }} state=directory owner={{ apache_group }} group={{ apache_group }} mode=u+rwx,g+rws
+  file: path={{ item.vhost_home }} state=directory owner={{ item.vhost_owner }} group={{ apache_group }} mode=4775
   with_items: vhosts
   tags: doc_root
 
@@ -44,7 +49,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: u+rwx,g+r
+    mode: 0755
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_file is defined
 - copy:
@@ -52,7 +57,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: u+rwx,g+r
+    mode: 0755
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_key_file  is defined
 - copy:
@@ -60,7 +65,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: u+rwx,g+r
+    mode: 0755
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_chain_file  is defined
 - copy:
@@ -68,7 +73,7 @@
     dest: /etc/pki/tls/certs/
     owner: root
     group: root
-    mode: u+rwx,g+r
+    mode: 0755
   with_items: vhosts
   when: ansible_os_family == 'RedHat' and item.ssl_cacertificate_file is defined
 

@@ -34,10 +34,10 @@ Example playbook
 Where vars/main.yml contains:
 ```yaml
    ---
-   vhost_parent_root: '/var/www/vhosts'
+   apache_group: 'apache'
    vhosts:
-       - { server_name: 'site1.com', vhost_home: '{{ vhost_parent_root }}/site1.com', sftp_user: 'site1', sftp_pass: 'sha_512_password' }
-       - { server_name: 'site2.com', vhost_home: '{{ vhost_parent_root }}/site2.com', sftp_user: 'site2', sftp_pass: 'sha_512_password' }
+       - { server_name: 'site1.com', vhost_home: '/var/www/vhosts/site1.com', vhost_owner: 'site1' }
+       - { server_name: 'site2.com', vhost_home: '/var/www/vhosts/site2.com', vhost_owner: 'site2' }
 ```
 
 You can specify as many sites as required.

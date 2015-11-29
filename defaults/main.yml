@@ -1,8 +1,8 @@
 ---
 proxy_pass_reverse_port: ''
-vhost_parent_root: '/var/www/vhosts'
+apache_group: 'apache'
 vhosts:
-    - { server_name: 'site1.com', servere_alias: '', vhost_home: '{{ vhost_parent_root }}/site1.com', sftp_user: 'site1', sftp_pass: 'sha_512_password', use_ssl: yes }
-    - { server_name: 'site2.com', servere_alias: '', vhost_home: '{{ vhost_parent_root }}/site2.com', sftp_user: 'site2', sftp_pass: 'sha_512_password', use_ssl: false }
+    - { server_name: 'site1.com', servere_alias: '', vhost_home: '/var/www/vhosts/site1.com', vhost_owner: 'site1', use_ssl: yes }
+    - { server_name: 'site2.com', servere_alias: '', vhost_home: '/var/www/vhosts/site2.com', vhost_owner: 'site2', use_ssl: false }
 
 

@@ -34,10 +34,10 @@ Example playbook
 Where vars/main.yml contains:
 ```yaml
    ---
-   apache_group: 'apache'
+   apache_user: 'apache'
    vhosts:
-       - { server_name: 'site1.com', vhost_home: '/var/www/vhosts/site1.com', vhost_owner: 'site1' }
-       - { server_name: 'site2.com', vhost_home: '/var/www/vhosts/site2.com', vhost_owner: 'site2' }
+       - { server_name: 'site1.com', vhost_home: '/var/www/vhosts/site1.com' }
+       - { server_name: 'site2.com', vhost_home: '/var/www/vhosts/site2.com' }
 ```
 
 You can specify as many sites as required.

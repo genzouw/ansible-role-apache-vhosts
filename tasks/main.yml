@@ -29,7 +29,7 @@
   tags: jail_dir
 
 - name: Create document root and set permissions
-  file: path={{ item.vhost_home }} state=directory owner={{ item.vhost_owner }} group={{ apache_group }} mode=4775
+  file: path={{ item.vhost_home }} state=directory owner={{ apache_user }} group={{ apache_user }} mode=4775
   with_items: vhosts
   tags: doc_root
 

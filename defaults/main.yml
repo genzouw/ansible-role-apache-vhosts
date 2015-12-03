@@ -1,8 +1,8 @@
 ---
 proxy_pass_reverse_port: ''
-apache_group: 'apache'
+apache_user: 'apache'
 vhosts:
-    - { server_name: 'site1.com', servere_alias: '', vhost_home: '/var/www/vhosts/site1.com', vhost_owner: 'site1', use_ssl: yes }
-    - { server_name: 'site2.com', servere_alias: '', vhost_home: '/var/www/vhosts/site2.com', vhost_owner: 'site2', use_ssl: false }
+    - { server_name: 'site1.com', servere_alias: '', vhost_home: '/var/www/vhosts/site1.com', use_ssl: yes }
+    - { server_name: 'site2.com', servere_alias: '', vhost_home: '/var/www/vhosts/site2.com', use_ssl: false }
 
 

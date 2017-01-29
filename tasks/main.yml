@@ -25,22 +25,22 @@
 
 - name: Create jail directory
   file: path={{ item.vhost_home }} state=directory owner=root group=root mode=0755
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   tags: jail_dir
 
 - name: Create document root and set permissions
   file: path={{ item.vhost_home }} state=directory owner={{ apache_user }} group={{ apache_user }} mode=4775
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   tags: doc_root
 
 - name: Create apache vhost
   template: src=vhost.conf.j2 dest={{ apache_vhost_dir }}/{{ item.server_name }}.conf owner=root mode=0644
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   tags: vhost
 
 - name: Enable vhosts
   command: /usr/sbin/a2ensite {{ item.server_name }}.conf
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   when: ansible_os_family == 'Debian'
   tags: enable_vhost
 
@@ -50,7 +50,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_file is defined
 - copy:
     src: "files/{{ item.ssl_certificate_key_file }}"
@@ -58,7 +58,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_key_file  is defined
 - copy:
     src: "files/{{ item.ssl_certificate_chain_file }}"
@@ -66,7 +66,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   when: ansible_os_family == 'RedHat' and item.ssl_certificate_chain_file  is defined
 - copy:
     src: "files/{{ item.ssl_cacertificate_file }}"
@@ -74,7 +74,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items: vhosts
+  with_items: "{{ vhosts }}"
   when: ansible_os_family == 'RedHat' and item.ssl_cacertificate_file is defined
 
 # - name: strip ssl keys
